@@ -9,7 +9,7 @@ var cityList = [
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('login');
+  res.render('weather', {cityList:cityList});
 });
 
 /* GET weather page. */
@@ -29,18 +29,19 @@ router.post('/addcity', function(req, res, next) {
   } else {
     var cityExist = false
     cityList.forEach(city => {
-      if ((city.name != req.body.cityname) && (cityExist == false)) {
-        cityList.push({
-          name : req.body.cityname,
-          image: './images/picto-1.png',
-          minTemp: '18.2',
-          maxTemp: '26.5',
-        })
-      } else {
+      if ( city.name.toLowerCase() == req.body.cityname.toLowerCase() ) {
         cityExist = true
-        res.locals.exist = 'City allready added';
+        res.locals.exist = 'City allready added'
       }
     })
+    if (cityExist == false) {
+      cityList.push({
+        name : req.body.cityname,
+        image: './images/picto-1.png',
+        minTemp: '18.2',
+        maxTemp: '26.5',
+      })
+    }
   }
   res.render('weather', {cityList:cityList});
 });
