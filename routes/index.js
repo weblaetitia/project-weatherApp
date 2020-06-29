@@ -47,7 +47,7 @@ router.post('/addcity', function(req, res, next) {
 
 /* GET deletecity page. */
 router.get('/deletecity', function(req, res, next) {
-  cityList.splice(req.query.order, 1)
+  cityList.splice(req.query.position, 1)
   res.render('weather', {cityList:cityList});
 });
 
