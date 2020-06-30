@@ -28,29 +28,32 @@ router.get('/weather', function(req, res, next) {
 /* POST newcity page. */
 router.post('/addcity', function(req, res, next) {
 
-  //  appeler wether api
+  //  appeler weather api
   var myRequest = request('GET', (`https://api.openweathermap.org/data/2.5/weather?q=${req.body.cityname}&units=metric&lang=fr&appid=3a50b49408c422fcd643322fc5c918c9`))
-  console.log(JSON.parse(myRequest.getBody()))
-  var myResult = JSON.parse(myRequest.getBody())
-
-  // end appeler wether api
-
-
-  if (cityList < 1) {
-    pushCity(myResult)
+  console.log(myRequest)
+  if (myRequest.statusCode == 404) {
+    console.log('NOT FOUND')
+    res.locals.notFound = 'City not found'
+    res.render('weather', {cityList:cityList});
   } else {
-    var cityExist = false
-    cityList.forEach(city => {
-      if ( city.name.toLowerCase() == req.body.cityname.toLowerCase() ) {
-        cityExist = true
-        res.locals.exist = 'City allready added'
-      }
-    })
-    if (cityExist == false) {
+    var myResult = JSON.parse(myRequest.getBody())
+    if (cityList < 1) {
       pushCity(myResult)
+    } else {
+      var cityExist = false
+      cityList.forEach(city => {
+        if ( city.name.toLowerCase() == req.body.cityname.toLowerCase() ) {
+          cityExist = true
+          res.locals.exist = 'City allready added'
+        }
+      })
+      if (cityExist == false) {
+        pushCity(myResult)
+      }
     }
+    res.render('weather', {cityList:cityList});
   }
-  res.render('weather', {cityList:cityList});
+  
 });
 
 /* GET deletecity page. */
