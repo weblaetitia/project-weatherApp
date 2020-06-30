@@ -3,10 +3,17 @@ var router = express.Router();
 var request = require('sync-request');
 
 // my city-list
+var cityList = []
 
-var cityList = [
-
-]
+var pushCity = (apiResult) => {
+  cityList.push({
+    name : apiResult.name,
+    description : apiResult.weather[0].description,
+    icon : apiResult.weather[0].icon,
+    minTemp: apiResult.main.temp_min,
+    maxTemp: apiResult.main.temp_max,
+  })
+}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,14 +37,7 @@ router.post('/addcity', function(req, res, next) {
 
 
   if (cityList < 1) {
-    cityList.push({
-      name : myResult.name,
-      description : myResult.weather[0].description,
-      icon : myResult.weather[0].icon,
-      image: './images/picto-1.png',
-      minTemp: myResult.main.temp_min,
-      maxTemp: myResult.main.temp_max,
-    })
+    pushCity(myResult)
   } else {
     var cityExist = false
     cityList.forEach(city => {
@@ -47,14 +47,7 @@ router.post('/addcity', function(req, res, next) {
       }
     })
     if (cityExist == false) {
-      cityList.push({
-        name : myResult.name,
-        description : myResult.weather[0].description,
-        icon : myResult.weather[0].icon,
-        image: './images/picto-1.png',
-        minTemp: myResult.main.temp_min,
-        maxTemp: myResult.main.temp_max,
-      })
+      pushCity(myResult)
     }
   }
   res.render('weather', {cityList:cityList});
