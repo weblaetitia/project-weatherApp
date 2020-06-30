@@ -42,7 +42,7 @@ router.post('/addcity', function(req, res, next) {
     } else {
       var cityExist = false
       cityList.forEach(city => {
-        if ( city.name.toLowerCase() == req.body.cityname.toLowerCase() ) {
+        if (city.name.toLowerCase() == req.body.cityname.toLowerCase() ) {
           cityExist = true
           res.locals.exist = 'City allready added'
         }
