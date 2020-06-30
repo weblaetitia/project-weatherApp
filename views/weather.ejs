@@ -53,8 +53,8 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <p class="mb-0"><%= cityList[i].name %></p>
                                 <div>
-                                    <span>Cloudy</span>
-                                    <img src="<%= cityList[i].image %>" alt="">
+                                    <span><%= cityList[i].description %></span>
+                                    <img src="http://openweathermap.org/img/wn/<%= cityList[i].icon %>.png" alt="<%= cityList[i].description %>">
                                     <span class="badge badge-pill badge-warning"><span><%= cityList[i].maxTemp %></span>°C</span>
                                     <span class="badge badge-pill badge-secondary"><span><%= cityList[i].minTemp %></span>°C</span>
                                 </div>
