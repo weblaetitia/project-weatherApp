@@ -12,20 +12,34 @@ router.get('/', function(req, res, next) {
 /* POST sign-up page */
 router.post('/sign-up', async function(req, res) {
   if((req.body.username) && (req.body.email) && (req.body.password)) {
-    var newUser = new UsersModel ({
-      name: req.body.username,
-      email: req.body.email,
-      password: req.body.password
+    // verif if email n'existe pas
+    var inputEmail = req.body.email
+    var existUser = await UsersModel.findOne({
+      email: inputEmail
     })
-     var user = await newUser.save()
-
-    // stock une info dans un objet de session
-    req.session.name = user.name
-    req.session.id = user._id
-
-    res.redirect('/weather')
+    if (existUser == null) {
+      var newUser = new UsersModel ({
+        name: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+      })
+       var user = await newUser.save()
+      // stock une info dans un objet de session
+      req.session.user = {
+        name: user.name,
+        _id: user._id
+      }
+      res.redirect('/weather')
+    } else {
+      // renvoyer une erreur
+      console.log('email deja existant')
+      res.render('login')
+    }
+    
   } else {
     // envoyer une erreur
+    console.log('veuillez remplir tous les champs')
+    res.render('login')
   }
 });
 
@@ -33,29 +47,36 @@ router.post('/sign-up', async function(req, res) {
 router.post('/sign-in', async function(req, res) {
   if((req.body.email) && (req.body.password)) {
     // verifier si email et password existent dans la base de donné
-    var okUser = await UsersModel.find({
+    var okUser = await UsersModel.findOne({
       email: req.body.email
     })
-    if (okUser[0].password == req.body.password) {
-      console.log('meme email meme password')
+    if ((okUser != null) && (okUser.password == req.body.password)) {
+      req.session.user = {
+        name: okUser.name,
+        _id: okUser._id
+      }
       res.redirect('/weather')
     } else {
       // envoyer une erreur
       console.log('pas les memes passwords')
-      res.redirect('/')
+      res.render('login')
     }
     
   } else {
     // envoyer une erreur
     console.log('remplire les 2 champs svp')
-    res.redirect('/')
+    res.render('login')
   }
 
 });
 
 
+/* GET log-out page */
+router.get('/logout', function (req, res) {
+  req.session.user = null
 
-
+  res.redirect('/')
+})
 
 
 
