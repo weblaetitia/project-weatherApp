@@ -36,20 +36,16 @@ router.post('/add-city', async function(req, res) {
       await newCity.save()
     } 
   }
-  cityList = await CityModel.find()
-  res.render('weather', {cityList:cityList});
+    res.redirect('/weather')
 })
   
 
 /* GET deletecity page. */
 router.get('/delete-city', async function(req, res) {
-  // recupérer le document à suprimer
   var cityID = req.query.id
-  // le suprimer
   await CityModel.deleteOne( {_id:cityID})
-  // rendre la page
-  cityList = await CityModel.find()
-  res.render('weather', {cityList:cityList});
+  
+  res.redirect('/weather')
 });
 
 /* GET update-city page. */
@@ -71,9 +67,7 @@ router.get('/update-city', async function(req, res) {
       })
   }
   
-  // rendre la page
-  cityList = await CityModel.find()
-  res.render('weather', {cityList:cityList});
+  res.redirect('/weather')
 });
 
 

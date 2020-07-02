@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+var session = require('express-session');
 
 // routers
 var indexRouter = require('./routes/index');
@@ -22,6 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session( {
+  secret: '6VTrm26YFk6Co42Oi6ooODBh7gxpyJct',
+  resave: false,
+  saveUninitialized: false
+} ))
 
 // router familys
 app.use('/', indexRouter);
