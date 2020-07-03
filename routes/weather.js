@@ -14,6 +14,7 @@ router.get('/', async function(req, res, next) {
   } else {
     res.redirect('/')
   }
+  res.redirect('/')
 });
 
 /* POST newcity page. */
