@@ -6,8 +6,14 @@ var CityModel = require('../models/weather')
 
 /* GET weather page. */
 router.get('/', async function(req, res, next) {
-  cityList = await CityModel.find()
-  res.render('weather', {cityList:cityList});
+
+  // user existe
+  if (req.session.user != null) {
+    cityList = await CityModel.find()
+    res.render('weather', {cityList:cityList});
+  } else {
+    res.redirect('/')
+  }
 });
 
 /* POST newcity page. */
@@ -32,11 +38,13 @@ router.post('/add-city', async function(req, res) {
         icon : myRequest.weather[0].icon,
         minTemp: myRequest.main.temp_min,
         maxTemp: myRequest.main.temp_max,
+        lon: myRequest.coord.lon,
+        lat: myRequest.coord.lat
       })
       await newCity.save()
     } 
   }
-    res.redirect('/weather')
+    res.redirect(`/weather`)
 })
   
 
@@ -51,7 +59,6 @@ router.get('/delete-city', async function(req, res) {
 /* GET update-city page. */
 router.get('/update-city', async function(req, res) {
   var cityList = await CityModel.find()
-  
   for (i=0; i<cityList.length; i++) {
     var myRequest = request('GET', (`https://api.openweathermap.org/data/2.5/weather?q=${cityList[i].name}&units=metric&lang=fr&appid=3a50b49408c422fcd643322fc5c918c9`))
     // console.log(cityList[i].name)
@@ -64,6 +71,8 @@ router.get('/update-city', async function(req, res) {
         icon : myRequest.weather[0].icon,
         minTemp: myRequest.main.temp_min,
         maxTemp: myRequest.main.temp_max, 
+        lon: myRequest.coord.lon,
+        lat: myRequest.coord.lat
       })
   }
   

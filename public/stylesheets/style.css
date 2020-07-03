@@ -48,3 +48,7 @@ a {
   margin-bottom: 50px;
   color: #FFFFFF;
 }
+
+#weathermap {
+  height: 400px;
+}
