@@ -1,8 +1,7 @@
 var mongoose = require('mongoose')
+require('dotenv').config()
 
-// require('dotenv')
-// var uri = DB_INFO
-var uri = ***REMOVED***
+var uri = process.env.DB_INFO
 
 var options = {
     connectTimeoutMS: 5000,
