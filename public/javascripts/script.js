@@ -1,40 +1,22 @@
 /* LEAFLET */
-var longitudes = []
-var latitudes = []
 
 var cityNames = document.querySelectorAll('.city-name')
 
+var latLong = []
+
 for (var i=0; i<cityNames.length; i++) {
-    longitudes.push(cityNames[i].dataset.lon)
-    latitudes.push(cityNames[i].dataset.lat)
+    var tempArray= []
+    tempArray.push(cityNames[i].dataset.lat)
+    tempArray.push(cityNames[i].dataset.lon)
+    latLong.push(tempArray)
     }
 
-var minLat = Math.min(...latitudes) 
-var maxLat = Math.max(...latitudes)
-var minLong = Math.min(...longitudes)
-var maxLong = Math.max(...longitudes)
-
-var mediumLat = (minLat + maxLat) / 2
-var mediumLong = (minLong + maxLong) / 2
-
-var deltaLong = (maxLong - minLong)
-
-
-
-
 var mymap = L.map('weathermap', {
-    center: [mediumLat, mediumLong],
+    center: [10, 10],
     zoom: 3
 });
 
-// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: '(c) <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-//     }).addTo(mymap);
-
-var Stadia_OSMBright = L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
-	maxZoom: 20,
-	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-})
+mymap.fitBounds(latLong);
 
 var CartoDB_VoyagerLabelsUnder = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
