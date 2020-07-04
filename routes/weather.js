@@ -6,7 +6,6 @@ var CityModel = require('../models/weather')
 
 /* GET weather page. */
 router.get('/', async function(req, res, next) {
-
   // user existe
   if (req.session.user != null) {
     cityList = await CityModel.find()
@@ -14,7 +13,6 @@ router.get('/', async function(req, res, next) {
   } else {
     res.redirect('/')
   }
-  res.redirect('/')
 });
 
 /* POST newcity page. */
@@ -22,14 +20,18 @@ router.post('/add-city', async function(req, res) {
   //  appeler weather api
   var myRequest = request('GET', (`https://api.openweathermap.org/data/2.5/weather?q=${req.body.cityname}&units=metric&lang=fr&appid=3a50b49408c422fcd643322fc5c918c9`))
   if (myRequest.statusCode > 300) {
+    // city not found
     res.locals.notFound = 'City not found'
+    res.render('weather')
   } else {
     var myRequest = JSON.parse(myRequest.getBody())
     // verif si une entré existe
     var cityExist = await CityModel.findOne({name: myRequest.name})
 
     if (cityExist) {
+      // city exist
       res.locals.exist = "This city is allready in your list"
+      res.render('weather')
     }
     
     if ((cityExist == null) && (myRequest.name)) {
@@ -62,9 +64,7 @@ router.get('/update-city', async function(req, res) {
   var cityList = await CityModel.find()
   for (i=0; i<cityList.length; i++) {
     var myRequest = request('GET', (`https://api.openweathermap.org/data/2.5/weather?q=${cityList[i].name}&units=metric&lang=fr&appid=3a50b49408c422fcd643322fc5c918c9`))
-    // console.log(cityList[i].name)
     myRequest = JSON.parse(myRequest.getBody())
-    // console.log(myRequest)
     await CityModel.updateOne( 
       { _id : cityList[i].id },
       {
@@ -77,7 +77,7 @@ router.get('/update-city', async function(req, res) {
       })
   }
   
-  res.redirect('/weather')
+  res.render('weather')
 });
 
 
