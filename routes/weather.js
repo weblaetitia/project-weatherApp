@@ -18,7 +18,7 @@ router.get('/', async function(req, res, next) {
 /* POST newcity page. */
 router.post('/add-city', async function(req, res) {
   //  appeler weather api
-  var myRequest = request('GET', (`https://api.openweathermap.org/data/2.5/weather?q=${req.body.cityname}&units=metric&lang=fr&appid=3a50b49408c422fcd643322fc5c918c9`))
+  var myRequest = request('GET', (`https://api.openweathermap.org/data/2.5/weather?q=${req.body.cityname}&units=metric&lang=en&appid=3a50b49408c422fcd643322fc5c918c9`))
   if (myRequest.statusCode > 300) {
     // city not found
     res.locals.notFound = 'City not found'
