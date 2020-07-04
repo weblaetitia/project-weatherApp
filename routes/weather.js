@@ -11,9 +11,7 @@ router.get('/', async function(req, res, next) {
     cityList = await CityModel.find()
     res.render('weather', {cityList:cityList});
   } else {
-    // res.redirect('/')
-    cityList = await CityModel.find()
-    res.render('weather', {cityList:cityList});
+    res.redirect('/')
   }
 });
 
