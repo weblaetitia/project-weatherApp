@@ -13,83 +13,86 @@
     <title>WeatherApp</title>
 </head>
 <body>
-    <!-- HEADER -->
-    <nav class="header navbar navbar-light bg-dark">
-        <div class="container my-2">
-            <a class="navbar-brand text-light" href="/">Weather App</a>
-            <a class="logout btn btn-light" href="/users/logout">Logout</a>
-        </div>
-    </nav>
-    <!-- GRID -->
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <form action="/weather/add-city" method="POST">
-                    <div class="input-group mb-3">
-                        <input name="cityname" type="text" class="form-control" placeholder="Enter city name" aria-label="Enter city name" aria-describedby="button-addon2" value="">
-                        <div class="input-group-append">
-                            <button class="btn btn-warning" type="submit" id="button-addon2">Add</button>
+    <div class="d-flex flex-column" style="height: 100vh;">
+        <!-- HEADER -->
+        <nav class="header navbar navbar-light bg-dark mb-auto">
+            <div class="container my-2">
+                <a class="navbar-brand text-light" href="/">Weather App</a>
+                <a class="logout btn btn-light" href="/users/logout">Logout</a>
+            </div>
+        </nav>
+        <!-- GRID -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="/weather/add-city" method="POST">
+                        <div class="input-group mb-3">
+                            <input name="cityname" type="text" class="form-control" placeholder="Enter city name" aria-label="Enter city name" aria-describedby="button-addon2" value="">
+                            <div class="input-group-append">
+                                <button class="btn btn-warning" type="submit" id="button-addon2">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <% if (cityList.length > 0) { %>
+                <div class="col-12 col-md-6 mt-md-n2">
+                    <div id="weathermap"></div>
+                </div>
+                <% } %>
+                <% if (cityList.length == 0) { %>
+                    <div class="col-12 col-md-6 mt-md-n2">
+                        <div class="alert alert-warning text-center" role="alert">
+                            Plaese add city
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            <% if (cityList.length > 0) { %>
-            <div class="col-12 col-md-6 mt-md-n2">
-                <div id="weathermap"></div>
-            </div>
-            <% } %>
-            <% if (cityList.length == 0) { %>
-                <div class="col-12 col-md-6 mt-md-n2">
-                    <div class="alert alert-warning text-center" role="alert">
-                        Plaese add city
-                    </div>
-                </div>
-              <% } else { %>  
-            <div class="col-12 col-md-6">
-                <p class="text-center mt-3"><a href="/weather/update-city" class="text-dark">Update cities<i class="fas fa-sync-alt ml-2 text-warning"></i></a></p>
-                <% if (locals.exist != undefined) { %>
-                    <div class="alert alert-warning text-center" role="alert">
-                        <%= exist %>
-                    </div>
-                <% } %>
+                <% } else { %>  
+                <div class="col-12 col-md-6">
+                    <p class="text-center mt-3"><a href="/weather/update-city" class="text-dark">Update cities<i class="fas fa-sync-alt ml-2 text-warning"></i></a></p>
+                    <% if (locals.exist != undefined) { %>
+                        <div class="alert alert-warning text-center" role="alert">
+                            <%= exist %>
+                        </div>
+                    <% } %>
 
-                <% if (locals.notFound !== undefined) { %>
-                    <div class="alert alert-danger text-center" role="alert">
-                        City not found
-                    </div>
-                <% } %>   
+                    <% if (locals.notFound !== undefined) { %>
+                        <div class="alert alert-danger text-center" role="alert">
+                            City not found
+                        </div>
+                    <% } %>   
 
-                <div class="card">
-                    <ul class="list-group list-group-flush"> 
-                      <!-- CITIES boucle   -->
-                        <% for (var i=0; i<cityList.length; i++) { %>                      
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <p id="city-<%=[i] %>" class="city-name mb-0" data-lon="<%= cityList[i].lon %>" data-lat="<%= cityList[i].lat %>" data-name="<%= cityList[i].name %>"><%= cityList[i].name %></p>
-                                <div>
-                                    <span><%= cityList[i].description %></span>
-                                    <img src="http://openweathermap.org/img/wn/<%= cityList[i].icon %>.png" alt="<%= cityList[i].description %>">
-                                    <span class="badge badge-pill badge-warning"><span><%= cityList[i].maxTemp %></span>°C</span>
-                                    <span class="badge badge-pill badge-secondary"><span><%= cityList[i].minTemp %></span>°C</span>
-                                </div>
-                                <a href="/weather/delete-city?id=<%=cityList[i]._id%>"><i class="far fa-times-circle text-warning"></i></a>
-                            </li>
-                        <% } %>
-                      <% } %>  
-                      <!-- end CITIES boucle -->
-                    </ul>
+                    <div class="card">
+                        <ul class="list-group list-group-flush"> 
+                        <!-- CITIES boucle   -->
+                            <% for (var i=0; i<cityList.length; i++) { %>                      
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <p id="city-<%=[i] %>" class="city-name mb-0" data-lon="<%= cityList[i].lon %>" data-lat="<%= cityList[i].lat %>" data-name="<%= cityList[i].name %>"><%= cityList[i].name %></p>
+                                    <div>
+                                        <span><%= cityList[i].description %></span>
+                                        <img src="http://openweathermap.org/img/wn/<%= cityList[i].icon %>.png" alt="<%= cityList[i].description %>">
+                                        <span class="badge badge-pill badge-warning"><span><%= cityList[i].maxTemp %></span>°C</span>
+                                        <span class="badge badge-pill badge-secondary"><span><%= cityList[i].minTemp %></span>°C</span>
+                                    </div>
+                                    <a href="/weather/delete-city?id=<%=cityList[i]._id%>"><i class="far fa-times-circle text-warning"></i></a>
+                                </li>
+                            <% } %>
+                        <% } %>  
+                        <!-- end CITIES boucle -->
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- footer -->
-    <div class="footer text-light bg-dark mt-4">
-        <div class="container">
-            <p class="text-center p-3 mb-0">Made by <a href="https://github.com/weblaetitia" class="text-warning" target="_blank" rel="noopener noreferrer">weblaetitia</a> @lacapsule.academy – July 2020</p>
+        <!-- footer -->
+        <div class="footer text-light bg-dark mt-auto">
+            <div class="container">
+                <p class="text-center p-3 mb-0">Made by <a href="https://github.com/weblaetitia" class="text-warning" target="_blank" rel="noopener noreferrer">weblaetitia</a> @lacapsule.academy – July 2020</p>
+            </div>
         </div>
+        <!-- footer -->
     </div>
-<!-- footer -->
+    
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
