@@ -1,7 +1,7 @@
 # Project "Weather app"
 https://weather-appapi.herokuapp.com/
 
-Week 2 personal project @lacapsule.academy
+Week 3 personal project @lacapsule.academy
 
 ## Techno used
 - Bootstrap
