@@ -33,13 +33,13 @@ router.post('/sign-up', async function(req, res) {
     } else {
       // renvoyer une erreur
       console.log('email deja existant')
-      res.render('login')
+      res.render('login', {errorSignUp: 'email already exists'})
     }
     
   } else {
     // envoyer une erreur
     console.log('veuillez remplir tous les champs')
-    res.render('login')
+    res.render('login', {errorSignUp: 'All fields must be complete'})
   }
 });
 
@@ -59,13 +59,13 @@ router.post('/sign-in', async function(req, res) {
     } else {
       // envoyer une erreur
       console.log('pas les memes passwords')
-      res.render('login')
+      res.render('login', {errorSignIn: 'wrong username or password'})
     }
     
   } else {
     // envoyer une erreur
     console.log('remplire les 2 champs svp')
-    res.render('login')
+    res.render('login', {errorSignIn: 'All fields must be complete'})
   }
 
 });

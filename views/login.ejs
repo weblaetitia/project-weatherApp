@@ -39,6 +39,11 @@
                 </div>
                 <button type="submit" class="btn btn-info">Submit</button>
               </form>
+              <% if (locals.errorSignUp != undefined) {%>
+              <div class="alert alert-warning mt-3" role="alert" style="text-shadow: none;">
+                <%= errorSignUp %>
+              </div>
+              <% } %>
           </div>
   
           <!-- SIGN IN AREA -->
@@ -61,6 +66,11 @@
                 </div>
                 <button type="submit" class="btn btn-info">Submit</button>
               </form>
+              <% if (locals.errorSignIn != undefined) {%>
+                <div class="alert alert-warning mt-3" role="alert" style="text-shadow: none;">
+                  <%= errorSignIn %>
+                </div>
+                <% } %>
           </div>
 
         </div>
